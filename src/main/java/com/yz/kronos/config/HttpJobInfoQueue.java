@@ -5,9 +5,9 @@ import com.yz.kronos.ExecuteConstant;
 import com.yz.kronos.JobInfo;
 import com.yz.kronos.exception.JobException;
 import com.yz.kronos.execute.JobInfoQueue;
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import lombok.extern.slf4j.Slf4j;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +18,7 @@ import java.io.IOException;
  * @author shanchong
  * @date 2019-12-23
  **/
+@Slf4j
 @Component
 public class HttpJobInfoQueue implements JobInfoQueue {
 
@@ -32,8 +33,12 @@ public class HttpJobInfoQueue implements JobInfoQueue {
     @Override
     public JobInfo lpop() throws JobException {
         String env = System.getenv(ExecuteConstant.KRONOS_EXECUTOR_ENV_NAME);
-        OkHttpClient httpClient = new OkHttpClient();
         Request request = new Request.Builder().url(url+"/job/lpop?key="+env).get().build();
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    log.info("get job info request api {}",request);
+                    return chain.proceed(request);
+                }).build();
         Call call = httpClient.newCall(request);
         String body;
         try {

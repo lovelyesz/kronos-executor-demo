@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 public class DemoJob implements IsolatedJavaJob {
 
     @Override
-    public void execute(final Integer integer, final Integer integer1, final String s) throws Exception {
+    public void execute(final Integer integer, final Integer integer1) throws Exception {
         IntStream.range(0,10000).forEach(i->{
             log.info("demo job data : {}",i);
         });

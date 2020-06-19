@@ -13,7 +13,7 @@
 
     <groupId>com.yz.kronos</groupId>
     <artifactId>kronos-executor-demo</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>

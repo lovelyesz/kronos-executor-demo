@@ -32,7 +32,8 @@ public class HttpJobInfoQueue implements JobInfoQueue {
      */
     @Override
     public JobInfo lpop() throws JobException {
-        String env = System.getenv(ExecuteConstant.KRONOS_EXECUTOR_ENV_NAME);
+        String env = ExecuteConstant.KRONOS_EXECUTOR_QUEUE_NAME_PRE+
+                System.getenv(ExecuteConstant.KRONOS_EXECUTE_ID);
         Request request = new Request.Builder().url(url+"/job/lpop?key="+env).get().build();
         OkHttpClient httpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
